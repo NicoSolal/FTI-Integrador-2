@@ -31,13 +31,18 @@ def ejecutar_caso(mt, entrada, traza=False):
     mt.ejecutar(traza=(lambda m: print("  ", m.configuracion())) if traza else None)
     cinta = mt.contenido()
 
-    # Cinta final esperada: K en cero (misma longitud) seguido de todas las generaciones.
+    # Cinta completa esperada: K en cero (misma longitud) seguido de todas las generaciones.
     generaciones = evolucionar(gen0, k)
     esperada = "0" * len(k_bin) + "#" + "#".join(generaciones) + "#"
 
-    for i, gen in enumerate(cinta.split("#")[1:-1]):
-        print(f"  Gen {i}: {' '.join(gen)}")
-    print(f"  Cinta final: {cinta}")
+    # Resumen: contador final y última generación.
+    partes = cinta.split("#")
+    final = f"{partes[0]}#{partes[-2]}#"
+
+    for i, gen in enumerate(partes[1:-1]):
+        print(f"  Gen {i:02d}: {' '.join(gen)}")
+    print(f"  Cinta completa: {cinta}")
+    print(f"  Cinta final: {final}")
     print(f"  Pasos de la MT: {mt.pasos}")
 
     ok = cinta == esperada
